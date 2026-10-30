@@ -96,14 +96,21 @@ st.markdown("""
 if 'cuidometro' not in st.session_state:
     st.session_state['cuidometro'] = 25
 
-if 'acordo_fechado' not in st.session_state:
-    st.session_state['acordo_fechado'] = False
+if 'acordos_concluidos' not in st.session_state:
+    st.session_state['acordos_concluidos'] = {}
 
 if 'cliente_selecionado' not in st.session_state:
     st.session_state['cliente_selecionado'] = "Distribuidora Alfa Ltda."
 
 if 'perfil_ativo' not in st.session_state:
     st.session_state['perfil_ativo'] = "Carla (A Apertada)"
+
+if 'disparar_baloes' not in st.session_state:
+    st.session_state['disparar_baloes'] = False
+
+if st.session_state['disparar_baloes']:
+    st.balloons()
+    st.session_state['disparar_baloes'] = False
 
 # ----------------------------------------------------
 # BARRA LATERAL (LINHA DO TEMPO C.H.A.M.A. & TREINAMENTO)
@@ -127,35 +134,40 @@ with st.sidebar:
     
     st.markdown("---")
     if "Conhecer" in fase_treino:
-        st.markdown("### 🔍 C · Conhecer (Prevenção & Risco)")
-        st.caption("📖 Consulte as págs. 10 a 12 do livro oficial")
-        st.info("💡 **Dica de Ouro da Lilian:**\n*'Quando o pedido for alto e o cliente novo, converse com o vendedor antes de decidir. Ele sabe coisas que o birô não mostra!'*")
-        st.warning("⚠️ **Cuidado / Evite:**\n- Cobrar sem checar a baixa bancária no ERP.\n- Conceder crédito no escuro sem política clara.")
-        st.success("✨ **Na Prática:**\n- Organize a carteira pelo quadrante de prioridades.\n- Registre cada contato no histórico do cliente.")
+        st.info("""💡 **Dica de Ouro da Lilian:**
+*"Quando o pedido for alto e o cliente novo, converse com o vendedor antes de decidir. Ele sabe coisas que o birô não mostra!"* (págs. 10-12)""")
+        st.warning("""⚠️ **Cuidado / Evite:**
+Liberar crédito no escuro sem consultar histórico ou cobrar sem conferir a baixa bancária no ERP (cobrança indevida destrói a confiança).""")
+        st.success("""✨ **Na Prática:**
+Organize a carteira pelo quadrante de prioridades e registre cada contato no CRM/ERP (se não está registrado, não aconteceu).""")
     elif "Humanizar" in fase_treino:
-        st.markdown("### 🤝 H · Humanizar (Conexão & WhatsApp)")
-        st.caption("📖 Consulte as págs. 14 a 17 do livro oficial")
-        st.info("💡 **Dica de Ouro da Lilian:**\n*'Pausar é técnica! Se a conversa esquentar, diga: Entendo que o momento é difícil. Prefere que eu te ligue amanhã às 10h para seguirmos com calma?'*")
-        st.warning("⚠️ **Cuidado / Evite:**\n- Mensagens frias, ameaçadoras ou irônicas.\n- CAIXA ALTA (soa como grito) e horários invasivos.")
-        st.success("✨ **Na Prática:**\n- Siga a anatomia em 5 partes: saudação, identificação, fato sem adjetivo, PIX copia e cola e porta aberta.")
+        st.info("""💡 **Dica de Ouro da Lilian:**
+*"Pausar é técnica! Se a conversa esquentar, diga: 'Entendo que o momento é difícil. Prefere que eu ligue amanhã às 10h para seguirmos com calma?'"* (págs. 14-17)""")
+        st.warning("""⚠️ **Cuidado / Evite:**
+Mensagens frias ou com tom de ameaça/ironia ("Última chance!"), uso de CAIXA ALTA (soa como grito) ou cobrança em horários invasivos.""")
+        st.success("""✨ **Na Prática:**
+Anatomia em 5 partes: 1. Saudação com nome; 2. Quem fala; 3. O fato sem adjetivo; 4. Facilidade (PIX copia e cola); 5. Porta aberta.""")
     elif "Agir" in fase_treino:
-        st.markdown("### ⏱️ A · Agir no Tempo Certo (Régua & CDC)")
-        st.caption("📖 Consulte as págs. 19 a 21 do livro oficial")
-        st.info("💡 **Dica de Ouro da Lilian:**\n*'Deixe o sistema lembrar. Deixe as pessoas negociarem!'*")
-        st.warning("⚠️ **Cuidado / Evite:**\n- Violar o Art. 42 do CDC: nunca expor, constranger ou ameaçar o cliente perante terceiros.")
-        st.success("✨ **Na Prática:**\n- Cumpra a cadência da régua do D-3 ao D+15.\n- Ligue apenas para valores mais expressivos.")
+        st.info("""💡 **Dica de Ouro da Lilian:**
+*"Deixe o sistema lembrar. Deixe as pessoas negociarem!"* (págs. 19-21)""")
+        st.warning("""⚠️ **Cuidado / Evite:**
+Violar o Art. 42 do Código de Defesa do Consumidor — nunca expor, constranger ou ameaçar o cliente em momento algum.""")
+        st.success("""✨ **Na Prática:**
+Do D-3 ao D+15, siga a cadência preventiva da régua (aviso útil no vencimento, lembrete amigável e ligação para valores expressivos).""")
     elif "Mediar" in fase_treino:
-        st.markdown("### ⚖️ M · Mediar (Negociação & Alçadas)")
-        st.caption("📖 Consulte as págs. 25 a 32 do livro oficial")
-        st.info("💡 **Dica de Ouro da Lilian:**\n*'Troque concessão por compromisso! Nunca conceda desconto sem exigir a garantia da entrada em até 24h.'*")
-        st.warning("⚠️ **Cuidado / Evite:**\n- Ceder fora da alçada só desta vez (o cliente acostuma e a próxima negociação já parte dali).")
-        st.success("✨ **Na Prática:**\n- Primeiro compreenda o motivo real do atraso.\n- Use a Calculadora de Alçadas para flexibilizar com segurança.")
+        st.info("""💡 **Dica de Ouro da Lilian:**
+*"Troque concessão por compromisso! Nunca conceda desconto sem exigir a garantia da entrada em até 24h."* (págs. 25-32)""")
+        st.warning("""⚠️ **Cuidado / Evite:**
+Conceder exceções fora da alçada "só desta vez" (o cliente acostuma e a próxima negociação já começa daquele patamar).""")
+        st.success("""✨ **Na Prática:**
+Primeiro o motivo real, depois a proposta. Use a Calculadora de Alçadas para manter a flexibilidade com limite claro de margem e caixa.""")
     else:
-        st.markdown("### 🛡️ A · Acompanhar (Ritual da Parcela & Redoma)")
-        st.caption("📖 Consulte as págs. 34 a 39 do livro oficial")
-        st.info("💡 **Dica de Ouro da Lilian:**\n*'O relacionamento não termina no pagamento. É aí que a fidelização começa!'*")
-        st.warning("⚠️ **Cuidado / Evite:**\n- Abandonar o cliente após o acordo (acordo sem acompanhamento vira inadimplência no mês seguinte).")
-        st.success("✨ **Na Prática:**\n- Isole o cliente na Redoma do Acordo Ativo contra robôs.\n- Faça o contato de confirmação preventiva no D-2.")
+        st.info("""💡 **Dica de Ouro da Lilian:**
+*"O relacionamento não termina no pagamento. É aí que a fidelização começa!"* (págs. 34-39)""")
+        st.warning("""⚠️ **Cuidado / Evite:**
+Abandonar o cliente após o aceite do acordo. Acordo sem acompanhamento vira promessa quebrada no mês seguinte.""")
+        st.success("""✨ **Na Prática:**
+Mova o cliente para a Redoma do Acordo Ativo (blindando-o de robôs de cobrança) e faça o contato preventivo no D-2 de cada parcela.""")
 
 # ----------------------------------------------------
 # CABEÇALHO PRINCIPAL (BIA CENTRALIZADA)
@@ -178,7 +190,8 @@ with col_regua:
     st.subheader("Régua de Operação C.H.A.M.A.")
     c1, c2, c3, c4, c5 = st.columns(5)
     
-    st_acordo = st.session_state['acordo_fechado']
+    cli_atual = st.session_state['cliente_selecionado']
+    st_acordo = st.session_state['acordos_concluidos'].get(cli_atual, False)
     
     lbl_c = "✓ CONCLUÍDO" if st_acordo else "✓ OK"
     lbl_h = "✓ CONCLUÍDO" if st_acordo else "✓ OK"
@@ -277,32 +290,57 @@ else:
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # ----------------------------------------------------
-# CARTEIRA DE CLIENTES SELECIONÁVEL
+# CARTEIRA DE CLIENTES SELECIONÁVEL & CONTROLE DE SESSÃO
 # ----------------------------------------------------
 st.subheader("Carteira de Atendimento Interativa")
 st.write("Selecione o cliente na lista para carregar os dados e a persona correspondente:")
 
-clientes_dados = [
-    {"Cliente": "Distribuidora Alfa Ltda.", "Valor (R$)": "5.000,00", "Atraso": "18 dias", "Perfil": "Carla (A Apertada)", "Status": "Aguardando Proposta"},
-    {"Cliente": "Mercearia do Jorge Ltda.", "Valor (R$)": "1.200,00", "Atraso": "2 dias", "Perfil": "Seu Jorge (O Esquecido)", "Status": "Enviar PIX"},
-    {"Cliente": "Tech Logística S.A.", "Valor (R$)": "8.500,00", "Atraso": "12 dias", "Perfil": "Rafael (O Contestador)", "Status": "Conferir NF"},
-    {"Cliente": "Marta Confecções EIRELI", "Valor (R$)": "3.400,00", "Atraso": "25 dias", "Perfil": "Dona Marta (A Sumida)", "Status": "Menu 1, 2, 3"},
-    {"Cliente": "Léo Eventos & Produções", "Valor (R$)": "4.100,00", "Atraso": "7 dias", "Perfil": "Léo (O Promitente)", "Status": "Confirmar Data"}
+col_sel_cli, col_btn_reset = st.columns([3.2, 1.2])
+
+clientes_base = [
+    {"Cliente": "Distribuidora Alfa Ltda.", "Valor (R$)": "5.000,00", "Atraso": "18 dias", "Perfil": "Carla (A Apertada)", "Status_Padrao": "Aguardando Proposta"},
+    {"Cliente": "Mercearia do Jorge Ltda.", "Valor (R$)": "1.200,00", "Atraso": "2 dias", "Perfil": "Seu Jorge (O Esquecido)", "Status_Padrao": "Enviar PIX"},
+    {"Cliente": "Tech Logística S.A.", "Valor (R$)": "8.500,00", "Atraso": "12 dias", "Perfil": "Rafael (O Contestador)", "Status_Padrao": "Conferir NF"},
+    {"Cliente": "Marta Confecções EIRELI", "Valor (R$)": "3.400,00", "Atraso": "25 dias", "Perfil": "Dona Marta (A Sumida)", "Status_Padrao": "Menu 1, 2, 3"},
+    {"Cliente": "Léo Eventos & Produções", "Valor (R$)": "4.100,00", "Atraso": "7 dias", "Perfil": "Léo (O Promitente)", "Status_Padrao": "Confirmar Data"}
 ]
 
-cli_nomes = [c["Cliente"] for c in clientes_dados]
+cli_nomes = [c["Cliente"] for c in clientes_base]
 index_sel = cli_nomes.index(st.session_state['cliente_selecionado']) if st.session_state['cliente_selecionado'] in cli_nomes else 0
 
-cliente_escolhido = st.selectbox("Selecione o Cliente em Atendimento:", cli_nomes, index=index_sel)
+with col_sel_cli:
+    cliente_escolhido = st.selectbox("Selecione o Cliente em Atendimento:", cli_nomes, index=index_sel)
+
+with col_btn_reset:
+    st.write("")
+    st.write("")
+    if st.button("🔄 Reiniciar Demonstração", use_container_width=True, help="Restaura o Cuidômetro para 25 e zera todos os acordos da simulação"):
+        st.session_state['cuidometro'] = 25
+        st.session_state['acordos_concluidos'] = {}
+        st.session_state['cliente_selecionado'] = "Distribuidora Alfa Ltda."
+        st.session_state['perfil_ativo'] = "Carla (A Apertada)"
+        st.rerun()
 
 if cliente_escolhido != st.session_state['cliente_selecionado']:
     st.session_state['cliente_selecionado'] = cliente_escolhido
-    for c in clientes_dados:
+    for c in clientes_base:
         if c["Cliente"] == cliente_escolhido:
             st.session_state['perfil_ativo'] = c["Perfil"]
             st.rerun()
 
-df_cli = pd.DataFrame(clientes_dados)
+# Monta tabela com status dinâmico refletindo acordos concluídos
+clientes_tabela = []
+for c in clientes_base:
+    status_dinamico = "🛡️ Acordo Ativo (Redoma)" if st.session_state['acordos_concluidos'].get(c["Cliente"], False) else c["Status_Padrao"]
+    clientes_tabela.append({
+        "Cliente": c["Cliente"],
+        "Valor (R$)": c["Valor (R$)"],
+        "Atraso": c["Atraso"],
+        "Perfil": c["Perfil"],
+        "Status": status_dinamico
+    })
+
+df_cli = pd.DataFrame(clientes_tabela)
 st.dataframe(df_cli, use_container_width=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
@@ -315,11 +353,12 @@ st.caption("Marque cada item verificado para garantir a conformidade antes da ab
 
 ck1, ck2, ck3, ck4, ck5 = st.columns(5)
 
-val_ck1 = ck1.checkbox("1. Baixa no ERP?", value=True, help="Conferiu se o pagamento entrou nos últimos 30 min?")
-val_ck2 = ck2.checkbox("2. Art. 42 CDC?", value=True, help="Garantir que não haverá exposição ou constrangimento.")
-val_ck3 = ck3.checkbox("3. Confirmou Titular?", value=True, help="Só tratar de valores diretamente com o responsável.")
-val_ck4 = ck4.checkbox("4. Tom Não-Violento?", value=False, help="Abordagem focada em solução e acolhimento.")
-val_ck5 = ck5.checkbox("5. Leu Histórico?", value=False, help="Analisou negociações anteriores e promessas.")
+cli_atual = st.session_state['cliente_selecionado']
+val_ck1 = ck1.checkbox("1. Baixa no ERP?", value=True, key=f"ck1_{cli_atual}", help="Conferiu se o pagamento entrou nos últimos 30 min?")
+val_ck2 = ck2.checkbox("2. Art. 42 CDC?", value=True, key=f"ck2_{cli_atual}", help="Garantir que não haverá exposição ou constrangimento.")
+val_ck3 = ck3.checkbox("3. Confirmou Titular?", value=True, key=f"ck3_{cli_atual}", help="Só tratar de valores diretamente com o responsável.")
+val_ck4 = ck4.checkbox("4. Tom Não-Violento?", value=False, key=f"ck4_{cli_atual}", help="Abordagem focada em solução e acolhimento.")
+val_ck5 = ck5.checkbox("5. Leu Histórico?", value=False, key=f"ck5_{cli_atual}", help="Analisou negociações anteriores e promessas.")
 
 tudo_ok = val_ck1 and val_ck2 and val_ck3 and val_ck4 and val_ck5
 if tudo_ok:
@@ -352,24 +391,32 @@ with col_calc:
 
 with col_gaveta:
     st.subheader("Gaveta da Bia (Modelo WhatsApp)")
-    st.write(f"**Mensagem Adaptada para {perf}:**")
     
+    # Orientação pedagógica da Bia para a persona ativa
     if "Carla" in perf:
-        msg_txt = "Olá Carla, tudo bem? Aqui é a Bia. Entendemos o momento da Distribuidora Alfa. Conseguimos organizar uma entrada de R$ 1.000,00 e 4 parcelas fixas sem juros. Podemos formalizar para manter seu crédito protegido?"
+        st.info("💡 **Orientação da Bia para Carla (A Apertada):** Escuta ativa, validação da dificuldade e proposta viável com entrada garantida.")
+        msg_txt = f"Olá Carla, tudo bem? Aqui é a Bia da MGP. Entendemos o momento da {cli_atual}. Conseguimos organizar uma entrada de R$ {ent:,.2f} e {parc} parcelas sem juros. Podemos formalizar para manter seu crédito protegido?"
     elif "Seu Jorge" in perf:
-        msg_txt = "Oi, Seu Jorge, bom dia! Aqui é a Bia. O boleto de R$ 1.200,00 venceu ontem. Segue o PIX copia e cola para facilitar: [00020126...]. Se já pagou, me envia o comprovante que dou baixa!"
+        st.info("💡 **Orientação da Bia para Seu Jorge (O Esquecido):** Lembrete leve e direto, com facilidade PIX sem nenhum tom de cobrança pesada.")
+        msg_txt = f"Oi, Seu Jorge, bom dia! Aqui é a Bia da MGP. Identifiquei o título da {cli_atual}. Segue a chave PIX copia e cola para facilitar: [00020126...]. Se já pagou, me envia o comprovante que dou baixa!"
     elif "Rafael" in perf:
-        msg_txt = "Olá Rafael! Tudo bem? Aqui é a Bia. Conforme solicitado, estou reenviando a Nota Fiscal e o comprovante de entrega da Tech Logística. Podemos confirmar o pagamento para hoje?"
+        st.info("💡 **Orientação da Bia para Rafael (O Contestador):** Postura técnica e consultiva. Reenvie as NFs e comprovantes antes de debater valores.")
+        msg_txt = f"Olá Rafael! Tudo bem? Aqui é a Bia da MGP. Conforme alinhado, estou reenviando a Nota Fiscal e o comprovante de entrega da {cli_atual}. Podemos confirmar a liquidação para hoje?"
     elif "Dona Marta" in perf:
-        msg_txt = "Olá Dona Marta! Aqui é a Bia. Para facilitar a regularização da Marta Confecções, escolha uma das opções: 1- Pagar via PIX à vista | 2- Parcelar em 3x | 3- Ligar para conversarmos."
+        st.info("💡 **Orientação da Bia para Dona Marta (A Sumida):** Mensagem curta, acolhedora, com opções simples numeradas (1, 2, 3) para facilitar a resposta.")
+        msg_txt = f"Olá Dona Marta! Aqui é a Bia da MGP. Para facilitar a regularização da {cli_atual}, escolha uma opção: 1- PIX com desconto | 2- Parcelar em {parc}x | 3- Ligar para conversarmos."
     else:
-        msg_txt = "Olá Léo! Tudo bem? Passando para confirmar nosso compromisso agendado para hoje referente ao título da Léo Eventos. Segue a chave PIX para quitação."
-        
-    st.text_area("Texto Formatado Pronto para Envio:", value=msg_txt, height=120)
+        st.info("💡 **Orientação da Bia para Léo (O Promitente):** Formalização por escrito do compromisso agendado (Ritual da Parcela).")
+        msg_txt = f"Olá Léo! Tudo bem? Passando para confirmar nosso compromisso agendado para hoje referente ao título da {cli_atual}. Segue a chave PIX para quitação."
+
+    st.text_area("Texto Formatado Pronto para Envio:", value=msg_txt, height=110, key=f"msg_txt_{perf}_{cli_atual}")
     
-    pode_confirmar = tudo_ok and alcada_aprovada
+    acordo_ja_feito = st.session_state['acordos_concluidos'].get(cli_atual, False)
+    pode_confirmar = tudo_ok and alcada_aprovada and not acordo_ja_feito
     
-    if not pode_confirmar:
+    if acordo_ja_feito:
+        st.success(f"🛡️ **Acordo Ativo:** O cliente **{cli_atual}** já está formalizado na Redoma de Proteção. Parabéns pelo relacionamento preservado!")
+    elif not pode_confirmar:
         motivos = []
         if not tudo_ok:
             motivos.append("Marcar todos os 5 itens da Trilha de Segurança")
@@ -379,9 +426,9 @@ with col_gaveta:
 
     if st.button("🤝 Confirmar Acordo & Mover para Redoma", disabled=not pode_confirmar, use_container_width=True):
         st.session_state['cuidometro'] += 1
-        st.session_state['acordo_fechado'] = True
-        st.balloons()
-        st.success(f"🎉 **Acordo Confirmado com Sucesso!** O cliente {st.session_state['cliente_selecionado']} foi movido para a **Redoma do Acordo Ativo** e o Cuidômetro subiu para **{st.session_state['cuidometro']} relações preservadas**!")
+        st.session_state['acordos_concluidos'][cli_atual] = True
+        st.session_state['disparar_baloes'] = True
+        st.rerun()
 
 st.markdown("<br><hr>", unsafe_allow_html=True)
 st.caption("Apoio Pedagógico ao Treinamento A Arte da Cobrança Humanizada (Lilian Lavorato) · Collab MGP - Métodos, Gestão e Projetos")
