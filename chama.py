@@ -127,15 +127,35 @@ with st.sidebar:
     
     st.markdown("---")
     if "Conhecer" in fase_treino:
-        st.info("**C · Conhecer**: Mapeie a carteira e confirme a baixa bancária antes de qualquer contato. Prevenção é a primeira linha da cobrança.")
+        st.markdown("### 🔍 C · Conhecer (Prevenção & Risco)")
+        st.caption("📖 Consulte as págs. 10 a 12 do livro oficial")
+        st.info("💡 **Dica de Ouro da Lilian:**\n*'Quando o pedido for alto e o cliente novo, converse com o vendedor antes de decidir. Ele sabe coisas que o birô não mostra!'*")
+        st.warning("⚠️ **Cuidado / Evite:**\n- Cobrar sem checar a baixa bancária no ERP.\n- Conceder crédito no escuro sem política clara.")
+        st.success("✨ **Na Prática:**\n- Organize a carteira pelo quadrante de prioridades.\n- Registre cada contato no histórico do cliente.")
     elif "Humanizar" in fase_treino:
-        st.info("**H · Humanizar**: Personalize a mensagem com nome, fato sem julgamento e facilidade (PIX). Respeite horários e a linguagem do cliente.")
+        st.markdown("### 🤝 H · Humanizar (Conexão & WhatsApp)")
+        st.caption("📖 Consulte as págs. 14 a 17 do livro oficial")
+        st.info("💡 **Dica de Ouro da Lilian:**\n*'Pausar é técnica! Se a conversa esquentar, diga: Entendo que o momento é difícil. Prefere que eu te ligue amanhã às 10h para seguirmos com calma?'*")
+        st.warning("⚠️ **Cuidado / Evite:**\n- Mensagens frias, ameaçadoras ou irônicas.\n- CAIXA ALTA (soa como grito) e horários invasivos.")
+        st.success("✨ **Na Prática:**\n- Siga a anatomia em 5 partes: saudação, identificação, fato sem adjetivo, PIX copia e cola e porta aberta.")
     elif "Agir" in fase_treino:
-        st.info("**A · Agir no Tempo Certo**: Cumpra os prazos da régua. Lembre-se do Art. 42 do CDC: nunca expor ou constranger o cliente.")
+        st.markdown("### ⏱️ A · Agir no Tempo Certo (Régua & CDC)")
+        st.caption("📖 Consulte as págs. 19 a 21 do livro oficial")
+        st.info("💡 **Dica de Ouro da Lilian:**\n*'Deixe o sistema lembrar. Deixe as pessoas negociarem!'*")
+        st.warning("⚠️ **Cuidado / Evite:**\n- Violar o Art. 42 do CDC: nunca expor, constranger ou ameaçar o cliente perante terceiros.")
+        st.success("✨ **Na Prática:**\n- Cumpra a cadência da régua do D-3 ao D+15.\n- Ligue apenas para valores mais expressivos.")
     elif "Mediar" in fase_treino:
-        st.info("**M · Mediar**: Escute o motivo do atraso. Use a Calculadora de Alçadas para negociar com autonomia sem perder a margem.")
+        st.markdown("### ⚖️ M · Mediar (Negociação & Alçadas)")
+        st.caption("📖 Consulte as págs. 25 a 32 do livro oficial")
+        st.info("💡 **Dica de Ouro da Lilian:**\n*'Troque concessão por compromisso! Nunca conceda desconto sem exigir a garantia da entrada em até 24h.'*")
+        st.warning("⚠️ **Cuidado / Evite:**\n- Ceder fora da alçada só desta vez (o cliente acostuma e a próxima negociação já parte dali).")
+        st.success("✨ **Na Prática:**\n- Primeiro compreenda o motivo real do atraso.\n- Use a Calculadora de Alçadas para flexibilizar com segurança.")
     else:
-        st.info("**A · Acompanhar**: Fechou o acordo? Mova o cliente para a Redoma de Proteção e acompanhe as parcelas no D-2.")
+        st.markdown("### 🛡️ A · Acompanhar (Ritual da Parcela & Redoma)")
+        st.caption("📖 Consulte as págs. 34 a 39 do livro oficial")
+        st.info("💡 **Dica de Ouro da Lilian:**\n*'O relacionamento não termina no pagamento. É aí que a fidelização começa!'*")
+        st.warning("⚠️ **Cuidado / Evite:**\n- Abandonar o cliente após o acordo (acordo sem acompanhamento vira inadimplência no mês seguinte).")
+        st.success("✨ **Na Prática:**\n- Isole o cliente na Redoma do Acordo Ativo contra robôs.\n- Faça o contato de confirmação preventiva no D-2.")
 
 # ----------------------------------------------------
 # CABEÇALHO PRINCIPAL (BIA CENTRALIZADA)
@@ -322,7 +342,8 @@ with col_calc:
     parc = st.slider("Número de Parcelas:", 1, 6, 4)
     desc = st.checkbox("Isenção de Juros/Multa (100%)", value=True)
     
-    if parc <= 3 and ent >= 1000.0:
+    alcada_aprovada = (parc <= 3 and ent >= 1000.0)
+    if alcada_aprovada:
         st.success("🟢 **Farol Verde (Nível Analista):** Proposta aprovada automaticamente na sua alçada!")
     elif parc <= 5:
         st.warning("🟡 **Farol Amarelo (Nível Coordenação):** Exige validação do coordenador. *💡 A Bia lembra: Troque concessão por compromisso!*")
@@ -346,12 +367,21 @@ with col_gaveta:
         
     st.text_area("Texto Formatado Pronto para Envio:", value=msg_txt, height=120)
     
-    if st.button("🤝 Confirmar Acordo & Mover para Redoma", use_container_width=True):
+    pode_confirmar = tudo_ok and alcada_aprovada
+    
+    if not pode_confirmar:
+        motivos = []
+        if not tudo_ok:
+            motivos.append("Marcar todos os 5 itens da Trilha de Segurança")
+        if not alcada_aprovada:
+            motivos.append("Simular proposta dentro do Farol Verde (Nível Analista)")
+        st.info("🔒 **Aguardando Pré-Requisitos para o Acordo:**\n- " + "\n- ".join(motivos))
+
+    if st.button("🤝 Confirmar Acordo & Mover para Redoma", disabled=not pode_confirmar, use_container_width=True):
         st.session_state['cuidometro'] += 1
         st.session_state['acordo_fechado'] = True
         st.balloons()
         st.success(f"🎉 **Acordo Confirmado com Sucesso!** O cliente {st.session_state['cliente_selecionado']} foi movido para a **Redoma do Acordo Ativo** e o Cuidômetro subiu para **{st.session_state['cuidometro']} relações preservadas**!")
-        st.rerun()
 
 st.markdown("<br><hr>", unsafe_allow_html=True)
 st.caption("Apoio Pedagógico ao Treinamento A Arte da Cobrança Humanizada (Lilian Lavorato) · Collab MGP - Métodos, Gestão e Projetos")
